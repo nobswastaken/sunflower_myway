@@ -47,6 +47,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
+
 
 
 @Composable
@@ -77,12 +80,14 @@ fun PlantListScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = onSearchQueryChange,
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = dimensionResource(id = R.dimen.card_side_margin),
                     vertical = dimensionResource(id = R.dimen.header_margin)
                 ),
+
             placeholder = { Text(text = stringResource(id = R.string.search_plants)) },
             leadingIcon = {
                 Icon(

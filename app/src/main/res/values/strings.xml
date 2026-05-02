@@ -27,14 +27,17 @@
     <string name="plant_details_title" translation_description="Title for the plant details screen where the user can see the details for a specific plant.">Plant details</string>
     <string name="add_plant" translation_description="Button text that prompts user to navigate to the Plant List to add plants to their empty garden.">Add plant</string>
     <string name="added_plant_to_garden" translation_description="Confirmation text that is shown when a user adds a plant to their empty garden.">Added plant to garden</string>
-    <string name="garden_empty" translation_description="Text that is shown on the 'My Garden' screen when no plants have been added to the user's garden">Your garden is empty</string>
+    <string name="garden_empty" translation_description="Text that is shown on the 'My Garden' screen when no plants have been added to the user's garden">Your garden is empty. \n Add plants to start tracking them.</string>
     <string name="plant_date_header" translation_description="Text that is shown on each plant on the 'My Garden' screen which says the word Planted to show date of planting below">Planted</string>
     <string name="watered_date_header" translation_description="Text that is shown on each plant on the 'My Garden' screen which says the word Last Watered to show date of last watering below">Last Watered</string>
     <string name="menu_item_share_plant" translation_description="The label for the Share menu item">Share</string>
     <string name="share_text_plant" translation_description="The default messaged used when sharing a plant on SNS, etc.">Check out the %s plant in the Android Sunflower app</string>
     <string name="gallery_title" translation_description="Title for the photo gallery screen">Photos by Unsplash</string>
-    <string name="search_plants" translation_description="Placeholder text for the plant search field">Search plants...</string>
+    <string name="search_plants" translation_description="Placeholder text for the plant search field">Search plants by name</string>
     <string name="clear_search" translation_description="Content description for the clear search button">Clear search</string>
+    <string name="watering_reminder_title" translation_description="Title for watering reminder section">Watering Reminder</string>
+    <string name="watering_reminder_body" translation_description="Body text for watering reminder">Water this plant regularly based on its schedule.</string>
+
 
 
     <!-- String plurals and their related prefix / suffix strings -->

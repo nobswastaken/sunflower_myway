@@ -558,6 +558,34 @@ private fun PlantInformation(
                 )
             }
         }
+
+        Text(
+            text = stringResource(id = R.string.watering_reminder_title),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .padding(
+                    start = Dimens.PaddingSmall,
+                    end = Dimens.PaddingSmall,
+                    top = Dimens.PaddingNormal,
+                    bottom = Dimens.PaddingSmall
+                )
+                .align(Alignment.CenterHorizontally)
+        )
+        Text(
+            text = stringResource(id = R.string.watering_reminder_body),
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .padding(
+                    start = Dimens.PaddingSmall,
+                    end = Dimens.PaddingSmall,
+                    bottom = Dimens.PaddingNormal
+                )
+
+                .align(Alignment.CenterHorizontally)
+        )
         PlantDescription(description)
     }
 }
