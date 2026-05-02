@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 /**
  * The ViewModel for plant list.
@@ -42,11 +44,19 @@ class PlantListViewModel @Inject internal constructor(
         savedStateHandle.get(GROW_ZONE_SAVED_STATE_KEY) ?: NO_GROW_ZONE
     )
 
-    val plants: LiveData<List<Plant>> = growZone.flatMapLatest { zone ->
-        if (zone == NO_GROW_ZONE) {
+    private val SQuery: MutableStateFlow<String> = MutableStateFlow(savedStateHandle.get("SEARCH_QUERY") ?: "")
+
+    val searchquery: LiveData<String> = SQuery.asLiveData()
+
+    val plants: LiveData<List<Plant>> = combine(growZone, SQuery){ zone, query -> zone to query}.flatMapLatest { (zone, query)->
+        val plantsFlow  = if (zone == NO_GROW_ZONE) {
             plantRepository.getPlants()
         } else {
             plantRepository.getPlantsWithGrowZoneNumber(zone)
+        }
+        plantsFlow.map { plants ->
+            if (query.isEmpty()) plants
+            else plants.filter { it.name.contains(query, ignoreCase = true) }
         }
     }.asLiveData()
 
@@ -84,6 +94,12 @@ class PlantListViewModel @Inject internal constructor(
                 savedStateHandle.set(GROW_ZONE_SAVED_STATE_KEY, newGrowZone)
             }
         }
+
+        viewModelScope.launch {
+            SQuery.collect { newQuery ->
+                savedStateHandle.set("SEARCH_QUERY", newQuery)
+            }
+        }
     }
 
     fun updateData() {
@@ -104,6 +120,9 @@ class PlantListViewModel @Inject internal constructor(
 
     fun isFiltered() = growZone.value != NO_GROW_ZONE
 
+    fun setSearchQuery(query: String) {
+        SQuery.value = query
+    }
     companion object {
         private const val NO_GROW_ZONE = -1
         private const val GROW_ZONE_SAVED_STATE_KEY = "GROW_ZONE_SAVED_STATE_KEY"

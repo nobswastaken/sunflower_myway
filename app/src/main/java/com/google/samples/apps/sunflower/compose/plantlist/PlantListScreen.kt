@@ -36,6 +36,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.samples.apps.sunflower.viewmodels.PlantListViewModel
 import com.google.samples.apps.sunflower.R
 import com.google.samples.apps.sunflower.data.Plant
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
+
 
 @Composable
 fun PlantListScreen(
@@ -45,7 +57,8 @@ fun PlantListScreen(
     viewModel: PlantListViewModel = hiltViewModel(),
 ) {
     val plants by viewModel.plants.observeAsState(initial = emptyList())
-    PlantListScreen(plants = plants, modifier, onPlantClick = onPlantClick)
+    val searchQuery by viewModel.searchquery.observeAsState(initial = "")
+    PlantListScreen(plants = plants, modifier, onPlantClick = onPlantClick, searchQuery = searchQuery, onSearchQueryChange = {viewModel.setSearchQuery(it)})
 }
 
 @Composable
@@ -53,22 +66,59 @@ fun PlantListScreen(
     plants: List<Plant>,
     modifier: Modifier = Modifier,
     onPlantClick: (Plant) -> Unit = {},
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {},
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier.testTag("plant_list")
-            .imePadding(),
-        contentPadding = PaddingValues(
-            horizontal = dimensionResource(id = R.dimen.card_side_margin),
-            vertical = dimensionResource(id = R.dimen.header_margin)
-        )
+    Column(
+        modifier = modifier
+            .testTag("plant_list")
+            .imePadding()
     ) {
-        items(
-            items = plants,
-            key = { it.plantId }
-        ) { plant ->
-            PlantListItem(plant = plant) {
-                onPlantClick(plant)
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = onSearchQueryChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = dimensionResource(id = R.dimen.card_side_margin),
+                    vertical = dimensionResource(id = R.dimen.header_margin)
+                ),
+            placeholder = { Text(text = stringResource(id = R.string.search_plants)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            },
+            trailingIcon = {
+                if (searchQuery.isNotEmpty()) {
+                    IconButton(onClick = { onSearchQueryChange("") }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = stringResource(id = R.string.clear_search)
+                        )
+                    }
+                }
+            },
+            singleLine = true,
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = modifier.testTag("plant_list")
+                .imePadding(),
+            contentPadding = PaddingValues(
+                horizontal = dimensionResource(id = R.dimen.card_side_margin),
+                vertical = dimensionResource(id = R.dimen.header_margin)
+            )
+        ) {
+            items(
+                items = plants,
+                key = { it.plantId }
+            ) { plant ->
+                PlantListItem(plant = plant) {
+                    onPlantClick(plant)
+                }
             }
         }
     }

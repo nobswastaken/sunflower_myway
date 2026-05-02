@@ -26,6 +26,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,12 +36,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -78,6 +81,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
@@ -97,6 +101,7 @@ import com.google.samples.apps.sunflower.data.Plant
 import com.google.samples.apps.sunflower.databinding.ItemPlantDescriptionBinding
 import com.google.samples.apps.sunflower.ui.SunflowerTheme
 import com.google.samples.apps.sunflower.viewmodels.PlantDetailViewModel
+import kotlin.math.round
 
 /**
  * As these callbacks are passed in through multiple Composables, to avoid having to name
@@ -520,6 +525,18 @@ private fun PlantInformation(
                         .padding(horizontal = Dimens.PaddingSmall)
                         .align(Alignment.CenterHorizontally)
                 )
+
+                if (name.startsWith("A", ignoreCase = true)) {
+                    Text(
+                        text = stringResource(id = R.string.beginner_badge),
+                        fontWeight = FontWeight.Light,
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .background(Color(0xFFD0FCD2), shape = RoundedCornerShape(12.dp))
+                            .padding(horizontal = Dimens.PaddingSmall)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
 
                 val wateringIntervalText = pluralStringResource(
                     R.plurals.watering_needs_suffix, wateringInterval, wateringInterval
